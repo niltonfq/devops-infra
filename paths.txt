@@ -1,0 +1,11 @@
+/usr/local/Cellar/maven/3.8.1
+/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+
+git clone https://github.com/niltonfq/tasks-frontend.git
+git clone https://github.com/niltonfq/tasks-backend.git
+
+./Users/nilton/Documents/projetos/devops/apache-tomcat-8.5.50/bin/startup.sh
+./Users/nilton/Documents/projetos/devops/apache-tomcat-8.5.50/bin/shutdown.sh
+
+javahome 11
+./Users/nilton/Documents/projetos/devops/sonarqube-8.8.0.42792/bin/macosx-universal-64/sonar.sh console

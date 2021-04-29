@@ -1,0 +1,99 @@
+version: "3"
+services: 
+    pg-tasks:
+        container_name: pg-tasks
+        image: postgres:9.6
+        ports: 
+            - 5433:5432
+        environment: 
+            - POSTGRES_DB=tasks
+            - POSTGRES_PASSWORD=password
+
+    db:
+        container_name: sonar_db
+        image: postgres
+        ports: 
+            - 5432:5432
+#        networks:
+#            - sonarnet
+        environment:
+            POSTGRES_USER: sonar
+            POSTGRES_PASSWORD: sonar
+        volumes:
+            - ./sonar/postgresql:/var/lib/postgresql
+            - ./sonar/postgresql_data:/var/lib/postgresql/data
+
+    selenium-hub:
+        image: selenium/hub:3.141.59-zinc
+        container_name: selenium-hub
+        networks:
+            - seleniumGrid
+        ports:
+            - "4444:4444"
+            
+    chrome:
+        image: selenium/node-chrome:3.141.59-zinc
+        container_name: Chrome-1
+        networks:
+            - seleniumGrid
+        depends_on:
+            - selenium-hub
+        environment:
+            - HUB_HOST=selenium-hub
+            - HUB_PORT=4444
+            - NODE_MAX_INSTANCES=2
+            - NODE_MAX_SESSIONS=2
+              
+    chrome2:
+        image: selenium/node-chrome:3.141.59-zinc
+        container_name: Chrome-2
+        networks:
+            - seleniumGrid
+        depends_on:
+            - selenium-hub
+        environment:
+            - HUB_HOST=selenium-hub
+            - HUB_PORT=4444
+            - NODE_MAX_INSTANCES=2
+            - NODE_MAX_SESSIONS=2
+
+networks:
+    seleniumGrid:   
+
+#     jenkins:
+#         container_name: jenkins
+#         image: jenkins/jenkins:lts
+#         ports:
+#             - 8000:8080
+#         volumes:
+#             - ./jenkins_home:/var/jenkins_home
+#         environment: 
+#             - tz=America/Sao_Paulo
+            
+#     sonarqube:
+#         container_name: sonar
+#         image: sonarqube:8.8-community
+#         depends_on:
+#             - db
+#         ports:
+#             - "9000:9000"
+#         networks:
+#             - sonarnet
+#         environment:
+#             SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
+#             SONAR_JDBC_USERNAME: sonar
+#             SONAR_JDBC_PASSWORD: sonar
+#         volumes:
+#             - ./sonar/sonarqube_data:/opt/sonarqube/data
+#             - ./sonar/sonarqube_extensions:/opt/sonarqube/extensions
+#             - ./sonar/sonarqube_logs:/opt/sonarqube/logs
+#             - ./sonar/sonarqube_temp:/opt/sonarqube/temp
+
+
+# networks:
+#     sonarnet:
+    
+    
+
+
+ 
